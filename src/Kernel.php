@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Pimcore
  *
@@ -30,9 +32,5 @@ class Kernel extends PimcoreKernel
     public function registerBundlesToCollection(BundleCollection $collection): void
     {
         $collection->addBundle(new PimcoreAdminBundle(), 60);
-    }
-    public function registerBundles(): array
-    {
-        return [new BlackbitCmsToolboxBundle()];
     }
 }

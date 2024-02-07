@@ -1,10 +1,12 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Tests\Unit\Controller;
 
 use App\Controller\DefaultController;
 use Codeception\Test\Unit;
+use PHPUnit\Framework\MockObject\Exception;
 use PHPUnit\Framework\MockObject\MockObject;
 use Pimcore\Config;
 use Pimcore\Templating\TwigDefaultDelegatingEngine;
@@ -19,8 +21,14 @@ class DefaultControllerTest extends Unit
 {
     private DefaultController $controller;
 
-    private MockObject|Environment $twig;
+    /**
+     * @var Environment&MockObject $twig
+     */
+    private MockObject&Environment $twig;
 
+    /**
+     * @throws Exception
+     */
     protected function setUp(): void
     {
         parent::setUp();
@@ -37,23 +45,29 @@ class DefaultControllerTest extends Unit
         $this->controller->setContainer($container);
     }
 
-    public function testDefaultAction()
+    /**
+     * @return void
+     * @throws Exception
+     */
+    public function testDefaultAction(): void
     {
-        $this->twig->method('render')->will(
-            $this->returnValueMap([
+        $this->twig->method('render')->willReturnMap(
+            [
                 // Simulate rendering of default template.
                 ['default/default.html.twig', [], 'At pimcore we love writing tests! ❤️TDD!'],
-            ])
+            ]
         );
 
         $response = $this->controller->defaultAction($this->createMock(Request::class));
+        $content = $response->getContent();
+        self::assertIsString($content);
 
         self::assertEquals(200, $response->getStatusCode());
-        self::assertStringContainsStringIgnoringCase('pimcore', $response->getContent());
-        self::assertStringContainsStringIgnoringCase('❤', $response->getContent());
-        self::assertStringContainsStringIgnoringCase('tests', $response->getContent());
-        self::assertStringNotContainsStringIgnoringCase('bugs', $response->getContent());
-        self::assertStringNotContainsStringIgnoringCase('hacks', $response->getContent());
-        self::assertStringNotContainsStringIgnoringCase('💩', $response->getContent());
+        self::assertStringContainsStringIgnoringCase('pimcore', $content);
+        self::assertStringContainsStringIgnoringCase('❤', $content);
+        self::assertStringContainsStringIgnoringCase('tests', $content);
+        self::assertStringNotContainsStringIgnoringCase('bugs', $content);
+        self::assertStringNotContainsStringIgnoringCase('hacks', $content);
+        self::assertStringNotContainsStringIgnoringCase('💩', $content);
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Unit;
 
 use Codeception\Test\Unit;
@@ -15,7 +17,11 @@ class ReadmeTest extends Unit
     protected function setUp(): void
     {
         parent::setUp();
-        $this->readme = file_get_contents(self::README_PATH);
+
+        $readme = file_get_contents(self::README_PATH);
+        self::assertIsString($readme);
+
+        $this->readme = $readme;
     }
 
     public function testReadmeIsWrittenWithLove(): void

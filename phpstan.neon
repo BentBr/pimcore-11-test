@@ -1,0 +1,10 @@
+parameters:
+    level: 9
+    paths:
+        - src/
+        - tests/
+    cognitive_complexity:
+        class: 80
+        function: 10
+includes:
+	- phpstan-baseline.neon

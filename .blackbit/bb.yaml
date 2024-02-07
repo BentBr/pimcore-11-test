@@ -1,0 +1,6 @@
+app_key: pimcore11-test
+database_dumps:
+sites:
+custom_commands:
+    - { alias: stan, command: [mutagen-compose, exec, php, vendor/bin/phpstan] }
+    - { alias: test, command: [mutagen-compose, exec, php, vendor/bin/codecept, run] }

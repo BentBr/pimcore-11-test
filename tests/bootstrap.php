@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 // define project root which will be used throughout the bootstrapping process
 define('PIMCORE_PROJECT_ROOT', dirname(__DIR__));
 
